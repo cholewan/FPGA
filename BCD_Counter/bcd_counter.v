@@ -11,29 +11,27 @@ module BcdCounter(
 
     always @(posedge Clk, negedge Rst) begin
         if (!Rst) begin
-            Dig0 <= 4'h00;
-            Dig1 <= 4'h00;
-            Dig2 <= 4'h00;
-            Dig3 <= 4'h00;
+            Dig0 <= 4'h08;
+            Dig1 <= 4'h08;
+            Dig2 <= 4'h09;
+            Dig3 <= 4'h09;
         end
-        else if (Up) begin
+        else if (Up) begin  
             if (Dig0 == 4'h09) begin
                 Dig0 <= 4'h00;    
-                Dig1 <= Dig1 + 1'b1;    
-            end 
-            else if (Dig1 == 4'h09) begin
-                Dig1 <= 4'h00;    
-                Dig2 <= Dig2 + 1'b1;    
-            end 
-            else if (Dig2 == 4'h09) begin
-                Dig2 <= 4'h00;    
-                Dig3 <= Dig3 + 1'b1;    
-            end 
-            else if (Dig3 == 4'h09) begin
-                Dig3 <= 4'h00;    
-                Dig0 <= Dig0 + 1'b1;
-            end 
-            else 
+                if (Dig1 == 4'h09) begin
+                    Dig1 <= 4'h00;
+                    if(Dig2 == 4'h09) begin
+                        Dig2 <= 4'h00;
+                        if (Dig3 == 4'h09) begin
+                            Dig3 <= 4'h00;
+                        end else
+                            Dig3 <= Dig3 + 1'b1;
+                    end else
+                        Dig2 <= Dig2 + 1'b1;
+                end else
+                    Dig1 <= Dig1 + 1'b1;
+            end else
                 Dig0 <= Dig0 + 1'b1;
         end
     end
